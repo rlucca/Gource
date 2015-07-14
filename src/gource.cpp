@@ -764,6 +764,10 @@ void Gource::keyPress(SDL_KeyboardEvent *e) {
             gGourceSettings.show_key = !gGourceSettings.show_key;
         }
 
+        if (e->keysym.sym == SDLK_a) {
+            gGourceSettings.show_authors = !gGourceSettings.show_authors;
+        }
+
         if(e->keysym.sym == SDLK_c) {
             splash = 15.0f;
         }

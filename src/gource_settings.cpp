@@ -71,6 +71,7 @@ void GourceSettings::help(bool extended_help) {
     printf("  -e, --elasticity FLOAT           Elasticity of nodes (default: 0.0)\n\n");
 
     printf("  --key                            Show file extension key\n\n");
+    printf("  --authors                        Show authors\n\n");
 
     printf("  --user-image-dir DIRECTORY       Dir containing images to use as avatars\n");
     printf("  --default-user-image IMAGE       Default user image file\n");
@@ -239,6 +240,7 @@ GourceSettings::GourceSettings() {
     arg_types["highlight-dirs"]  = "bool";
     arg_types["file-extensions"] = "bool";
     arg_types["key"]             = "bool";
+    arg_types["authors"]         = "bool";
     arg_types["ffp"]             = "bool";
 
     arg_types["disable-auto-rotate"] = "bool";
@@ -345,6 +347,7 @@ void GourceSettings::setGourceDefaults() {
     dont_stop      = false;
 
     show_key = false;
+    show_authors = false;
 
     disable_auto_rotate = false;
 
@@ -1130,6 +1133,10 @@ void GourceSettings::importGourceSettings(ConfFile& conffile, ConfSection* gourc
 
     if(gource_settings->getBool("key")) {
         show_key = true;
+    }
+
+    if(gource_settings->getBool("authors")) {
+        show_authors = true;
     }
 
     if(gource_settings->getBool("ffp")) {
