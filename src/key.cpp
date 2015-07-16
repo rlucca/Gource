@@ -238,6 +238,34 @@ void TextKey::dec(RFile* file) {
     entry->dec();
 }
 
+void TextKey::inc(const std::string &username) {
+
+    TextKeyEntry* entry = 0;
+
+    std::map<std::string, TextKeyEntry*>::iterator result = keymap.find(username);
+
+    if(result != keymap.end()) {
+        entry = result->second;
+    } else {
+
+        entry = new TextKeyEntry(font, username, colourHash(username));
+        keymap[username] = entry;
+    }
+
+    entry->inc();
+}
+
+void TextKey::dec(const std::string &username) {
+
+    std::map<std::string, TextKeyEntry*>::iterator result = keymap.find(username);
+
+    if(result == keymap.end()) return;
+
+    TextKeyEntry* entry = result->second;
+
+    entry->dec();
+}
+
 bool file_key_entry_sort (const TextKeyEntry* a, const TextKeyEntry* b) {
 
     //sort by count

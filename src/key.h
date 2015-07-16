@@ -90,8 +90,13 @@ public:
 
     void colourize();
     
+	// FileKey
     void inc(RFile* file);
     void dec(RFile* file);
+
+	// AuthorKey
+	void inc(const std::string &username);
+    void dec(const std::string &username);
 
     void logic(float dt);
     
