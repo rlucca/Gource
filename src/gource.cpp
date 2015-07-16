@@ -126,6 +126,7 @@ Gource::Gource(FrameExporter* exporter) {
     textbox.show();
 
     file_key = TextKey(1.0f);
+    author_key = TextKey(1.0f);
 
     camera = ZoomCamera(vec3(0,0, -300), vec3(0.0, 0.0, 0.0), gGourceSettings.camera_zoom_default, gGourceSettings.camera_zoom_max);
     camera.setPadding(gGourceSettings.padding);
@@ -932,6 +933,7 @@ void Gource::reset() {
     last_percent = 0.0;
 
     file_key.clear();
+    author_key.clear();
 
     idle_time=0;
     currtime=0;
@@ -1208,6 +1210,8 @@ void Gource::processCommit(RCommit& commit, float t) {
 
         addFileAction(commit.username, cf, file, t);
     }
+
+    author_key.inc(commit.username);
 }
 
 void Gource::addFileAction(const std::string& username, const RCommitFile& cf, RFile* file, float t) {
@@ -1343,11 +1347,15 @@ void Gource::updateUsers(float t, float dt) {
         u->logic(t, dt);
 
         //deselect user if fading out from inactivity
-        if(u->isFading() && selectedUser == u) {
-            selectUser(0);
+        if(u->isFading()) {
+            if(selectedUser == u) {
+                selectUser(0);
+            }
+            author_key.dec(u->getName());
         }
 
         if(u->isInactive()) {
+            author_key.dec(u->getName());
             inactiveUsers.push_back(u);
         }
 
@@ -1576,6 +1584,7 @@ void Gource::logic(float t, float dt) {
     }
 
     file_key.logic(dt);
+    author_key.logic(dt);
 
     slider.logic(dt);
 
@@ -2608,6 +2617,10 @@ void Gource::draw(float t, float dt) {
     //file key
     file_key.draw();
     file_key.setShow(gGourceSettings.show_key);
+
+    //author key
+    author_key.draw();
+    author_key.setShow(gGourceSettings.show_authors);
 
     //slider
     if(canSeek()) {
