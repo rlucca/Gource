@@ -231,6 +231,9 @@ int RUser::getPendingActionCount() {
 }
 
 void RUser::logic(float t, float dt) {
+	float ratio = (float) display.width / (float) display.height;
+    size = 20.0 * gGourceSettings.user_scale * ratio;
+
     Pawn::logic(dt);
 
     action_interval -= dt;
